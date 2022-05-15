@@ -103,7 +103,7 @@ public class GetSchedulesRequestHandler : IRequestHandler<GetSchedulesRequest, I
             if (string.IsNullOrWhiteSpace(value))
                 return null;
 
-            _shiftCalculator.CalculateShift(value, columnStart, columnLength);
+            _shiftCalculator.CalculateShift(value, columnStart, columnStart + columnLength);
 
             if (addLeadingSpace)
                 value = ' ' + value;
@@ -119,44 +119,34 @@ public class GetSchedulesRequestHandler : IRequestHandler<GetSchedulesRequest, I
             "and"
         };
 
-        int _shiftFromConjunctions;
-        int _shiftFromParenthesis;
+        int _shift = 0;
 
-        public void CalculateShift(string entry, int entryStart, int entryLength)
+        public void CalculateShift(string entry, int entryStart, int entryEnd)
         {
-            CalculateShiftFromConjunections(entry, entryStart);
-            CalculateShiftFromParenthesis(entry, entryStart, entryStart + entryLength);
-        }
+            if (entryStart == 0)
+                return;
 
-        void CalculateShiftFromParenthesis(string entry, int entryStart, int entryEnd)
-        {
             if (entry.Contains('(') && !entry.Contains(')'))
             {
-                _shiftFromParenthesis = entryStart;
+                _shift = entryStart;
                 return;
             }
 
             if (entry.EndsWith(')'))
             {
-                _shiftFromParenthesis = entryEnd;
+                _shift = entryEnd;
                 return;
             }
-        }
-
-        void CalculateShiftFromConjunections(string entry, int entryStart)
-        {
-            if (entryStart == 0)
-                return;
 
             var words = entry.Split();
 
             if (_conjunctions.Contains(words.Last()))
-                _shiftFromConjunctions = entryStart;
+                _shift = entryStart;
         }
 
         public string AddShift(string row)
         {
-            var padding = new string(' ', _shiftFromConjunctions + _shiftFromParenthesis);
+            var padding = new string(' ', _shift);
             return padding + row;
         }
     }
