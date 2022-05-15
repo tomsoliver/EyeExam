@@ -4,7 +4,7 @@ using System.Security.Claims;
 using System.Text;
 using System.Text.Encodings.Web;
 
-namespace EyeExamApi.Implementations
+namespace EyeExamApi.Authentication
 {
     public class BasicAuthHandler : AuthenticationHandler<AuthenticationSchemeOptions>
     {
@@ -25,7 +25,7 @@ namespace EyeExamApi.Implementations
         /// Dummy custom auth handler, because minimal APIs regressed in this a bit.
         /// </summary>
         /// <returns></returns>
-        protected override Task<AuthenticateResult> HandleAuthenticateAsync()
+        protected override Task<AuthenticateResult> HandleAuthenticateAsync()        
         {
             var header = Request.Headers["Authorization"].ToString();
             if (header?.Length > 0 && header.Contains("basic", StringComparison.InvariantCultureIgnoreCase))

@@ -62,3 +62,14 @@ If you find yourself running out of time prior to completing the entire problem,
 
 # Submission
 Submit your result via your medium of choice (zip archive / git repo) to the recruiter or contact at Orbital Witness, and we'll be in touch with the results! 
+
+
+#### My Notes
+To run `dotnet run --project ./src/EyeExamApi` or in docker
+
+```
+docker build . -f ./src/EyeExamApi/Dockerfile -t eye-exam 
+docker run eye-exam
+```
+
+To make a request use `curl -v --insecure -XGET -H 'Authorization: basic dGVzdHk6bWNUZXN0RmFjZQ==' 'http://localhost:80/results'`

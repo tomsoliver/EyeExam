@@ -25,5 +25,6 @@ public class ScheduleEndpoint : IEndpoint<IResult>
         app.MapGet("/results", HandleAsync)
             .Produces<IEnumerable<ParsedScheduleNoticeOfLease>>()
             .Produces(StatusCodes.Status404NotFound)
-            .Produces(StatusCodes.Status500InternalServerError);
+            .Produces(StatusCodes.Status500InternalServerError)
+            .RequireAuthorization();
 }
