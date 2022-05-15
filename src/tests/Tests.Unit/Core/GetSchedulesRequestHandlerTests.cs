@@ -9,15 +9,17 @@ namespace Tests.Unit;
 public class GetSchedulesRequestHandlerTests
 {
     [Fact]
-    public async Task Handle_Test()
+    public async Task Handle_ParsesSchedulesCorrectly()
     {
         var destination = new ParsedScheduleDataService().GetParsedScheduleNoticeOfLeases();
 
         var result = await new GetSchedulesRequestHandler(new RawScheduleDataService())
             .Handle(new GetSchedulesRequest(), default);
 
-        result.Should().BeEquivalentTo(destination, o => o
-            .WithoutStrictOrdering()
-            .ComparingByMembers<ParsedScheduleNoticeOfLease>());
+        result.OrderBy(s => s.EntryNumber)
+            .Should()
+            .BeEquivalentTo(destination, o => o
+                .WithStrictOrdering()
+                .ComparingByMembers<ParsedScheduleNoticeOfLease>());
     }
 }
