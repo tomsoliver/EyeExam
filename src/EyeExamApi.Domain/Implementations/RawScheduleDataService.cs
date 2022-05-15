@@ -78,20 +78,20 @@ namespace EyeExamApi.Implementations
                     "NOTE 3: A Deed dated 13 February 1997 made between (1) Orbit Housing Association (2) John Joseph McMahon and others and (3) Britannia Building Society is supplemental to the lease. It substitutes a new plan for the original lease plan. (Copy Deed filed under TGL24029)"
                 }
             },
-            //new RawScheduleNoticeOfLease()
-            //{
-            //    EntryNumber = "5",
-            //    EntryDate = "",
-            //    EntryType = "Schedule of Notices of Leases",
-            //    EntryText = new List<string>() {
-            //        "19.09.1989      12 Harbord Close (Ground      01.09.1989      TGL27196   ",
-            //        "Edged and       and First Floor Flat)         125 years from             ",
-            //        "numbered 25                                   1.9.1989                   ",
-            //        "(Part of) in                                                             ",
-            //        "brown                                                                    ",
-            //        "NOTE: By a Deed dated 20 July 1995 made between (1) Orbit Housing Association and (2) Clifford Ronald Mitchell the terms of the Lease were varied.  (Copy Deed filed under TGL27169)"
-            //    }
-            //}
+            new RawScheduleNoticeOfLease()
+            {
+                EntryNumber = "5",
+                EntryDate = "",
+                EntryType = "Schedule of Notices of Leases",
+                EntryText = new List<string>() {
+                    "19.09.1989      12 Harbord Close (Ground      01.09.1989      TGL27196   ",
+                    "Edged and       and First Floor Flat)         125 years from             ",
+                    "numbered 25                                   1.9.1989                   ",
+                    "(Part of) in                                                             ",
+                    "brown                                                                    ",
+                    "NOTE: By a Deed dated 20 July 1995 made between (1) Orbit Housing Association and (2) Clifford Ronald Mitchell the terms of the Lease were varied.  (Copy Deed filed under TGL27169)"
+                }
+            }
         };
 
             return results.OrderBy(a => _rng.Next());

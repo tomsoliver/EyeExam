@@ -32,8 +32,85 @@ public class GetSchedulesRequestHandler : IRequestHandler<GetSchedulesRequest, I
         }
     }
 
+    static class ColumnCalculator
+    {
+        public const int MaxRowLength = 73;
+
+        const int SecondColumnIndex = 16;
+        const int ThirdColumnIndex = 46;
+        const int FourthColumnIndex = 62;
+
+        const int FirstColumnLength = 16;
+        const int SecondColumnLength = ThirdColumnIndex - SecondColumnIndex;
+        const int ThirdColumnLength = FourthColumnIndex - ThirdColumnIndex;
+
+        public static Row CalculateCells(string row, int columnOffset)
+        {
+            if (row.StartsWith("Note"))
+                return Row.NewNoteRow(row);
+
+            var cells = GetCells(row, columnOffset);
+            return Row.New(cells);
+        }
+
+        static string?[] GetCells(string row, int columnOffset)
+        {
+            var cells = new string?[5];
+
+            for (var column = 0; column < 5; column++)
+            {
+                var (index, length) = GetCellLocation(column, columnOffset);
+
+                if (row.Length < index)
+                    continue;
+
+                if (row.Length < index + length)
+                    length = row.Length - index;
+
+                var value = row.Substring(index, length).Trim();
+
+                cells[column] = value;
+            }
+
+            return cells;
+        }
+
+        static (int index, int length) GetCellLocation(int column, int columnOffset)
+        {
+            return (column + columnOffset) switch
+            {
+                0 => (0, FirstColumnLength),
+                1 => (SecondColumnIndex, SecondColumnLength),
+                2 => (ThirdColumnIndex, ThirdColumnLength),
+                3 => (FourthColumnIndex, MaxRowLength),
+                _ => throw new ArgumentOutOfRangeException()
+            };
+        }
+    }
+
+    readonly struct Row
+    {
+        Row(string?[] cells, bool isNoteRow)
+        {
+            Cells = cells;
+            IsNoteRow = isNoteRow;
+        }
+
+        public string?[] Cells { get; }
+        public bool IsNoteRow { get; }
+
+        public static Row New(string?[] cells) => new Row(cells, true);
+
+        public static Row NewNoteRow(string value)
+        {
+            return new Row(new[] { value }, true);
+        }
+    }
+
     public class ParsedScheduleNoticeOfLeaseBuilder
     {
+        public const int MaxRowLength = 73;
+
         const int SecondColumnIndex = 16;
         const int ThirdColumnIndex = 46;
         const int FourthColumnIndex = 62;
@@ -66,7 +143,7 @@ public class GetSchedulesRequestHandler : IRequestHandler<GetSchedulesRequest, I
 
         void ParseFirstRow(string row)
         {
-            if (row.Length != 73)
+            if (row.Length != MaxRowLength)
                 throw new ArgumentException($"Invalid first row with length {row.Length} and value {row}", nameof(row));
 
             _lease.RegistrationDateAndPlanRef += GetValue(row, 0, FirstColumnLength, false);
@@ -146,78 +223,16 @@ public class GetSchedulesRequestHandler : IRequestHandler<GetSchedulesRequest, I
 
         public string AddShift(string row)
         {
+            if (row.Length == ParsedScheduleNoticeOfLeaseBuilder.MaxRowLength || row.StartsWith("NOTE"))
+                return row;
+
             var padding = new string(' ', _shift);
             return padding + row;
         }
     }
-
-    //void SetItem(string token, Action<string> modify, TokenType type)
-    //{
-    //    var containsOpeningBracket = token.Contains('(');
-    //    var containsClosingBracket = token.Contains(')');
-
-    //    if (!(containsOpeningBracket ^ containsClosingBracket))
-    //    {
-    //        modify(token);
-    //        return;
-    //    }
-
-    //    if (containsOpeningBracket)
-    //}
-
-    //void ParseTokenInRowWithSingleEntry(string token)
-    //{
-    //    if (token.StartsWith("NOTE"))
-    //    {
-    //        _instance.Notes.Add(token);
-    //        return;
-    //    }
-    //}
-
-    //void ParseTokenInRowWithTwoEntries(string token, int rowNumber, int columnNumber, int rowLength)
-    //{
-    //    var containsOpeningBracket = token.Contains('(');
-    //    var containsClosingBracket = token.Contains(')');
-
-    //    if (!containsOpeningBracket && containsClosingBracket)
-    //    {
-    //        var type = _tokensWithUnfulfilledBrackets ?? 
-    //            throw new InvalidOperationException("Closing bracket detected without opening bracket");
-
-    //        _tokensWithUnfulfilledBrackets = null;
-    //        return type;
-    //    }
-
-    //    if (containsOpeningBracket && !containsClosingBracket)
-    //    {
-    //        if (_tokensWithUnfulfilledBrackets != null)
-    //            throw new InvalidOperationException("Unable to determine token type");
-    //        _tokensWithUnfulfilledBrackets = type;
-    //    }
-    //}
-
-    //void AddToken(TokenType type, string value)
-    //{
-    //    var containsOpeningBracket = value.Contains('(');
-    //    var containsClosingBracket = value.Contains(')');
-
-    //    if (containsOpeningBracket && !containsClosingBracket)
-    //    {
-    //        if (_tokensWithUnfulfilledBrackets != null)
-    //            throw new InvalidOperationException("Unable to determine token type");
-    //        _tokensWithUnfulfilledBrackets = type;
-    //    }
-
-    //    if (!containsOpeningBracket && containsClosingBracket)
-    //    {
-    //        _tokensWithUnfulfilledBrackets = null;
-    //    }
-
-    //    if (type )
-    //}
 }
 
-public enum TokenType
+enum TokenType
 {
     Unknown,
     LeeseeTitle,
