@@ -82,6 +82,7 @@ Generally I organise my projects as follows:
      - Ask about the raw schedule service to understand message format so it can be unit tested
      - Split existing test into smaller units
 - Pagination of results, consider using IAsyncEnumerable for raw schedule service
+- Consider making restful and adding HAL if need to request schedule by id
 - Security
      - Secure API with strong authentication if possible (maybe digest or OAuth2)
      - Secure API keys in something like AWS Secrets manager
