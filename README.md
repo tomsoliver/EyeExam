@@ -26,10 +26,16 @@ The API was built with .NET 6 Minimal API. As such you'll need the .NET 6 SDK an
 
 ## To run with VSCode 
 1. Open your terminal.
-1. Navigate to `/EYEEXAMAPI` 
-1. Run `dotnet run`
-1. Navigate to `https://localhost:7203/swagger/index.html` 
-1. You may need to run `dotnet dev-certs https --trust` to accept the dotnet dev ssl cert
+2. Navigate to `src/EyeExamApi` 
+3. Run `dotnet run`
+4. Navigate to `https://localhost:7203/swagger/index.html` 
+5. You may need to run `dotnet dev-certs https --trust` to accept the dotnet dev ssl cert
+
+## To run with Docker
+1. Run `docker build . -f ./src/EyeExamApi/Dockerfile -t eye-exam`
+2. Run `docker run -p 80:80 -p 443:443 eye-exam`
+3. Navigate to `https://localhost:7203/swagger/index.html` 
+4. Make a request with `curl -v --insecure -XGET -H 'Authorization: basic dGVzdHk6bWNUZXN0RmFjZQ==' 'http://localhost:80/results'`
 
 ## Auth
 The API uses Basic auth and the credentials can be find the in the appSettings json.
@@ -63,13 +69,26 @@ If you find yourself running out of time prior to completing the entire problem,
 # Submission
 Submit your result via your medium of choice (zip archive / git repo) to the recruiter or contact at Orbital Witness, and we'll be in touch with the results! 
 
+# Notes
+## Project Organisation
+Generally I organise my projects as follows:
+- API: Responsible for HTTP infrastructure, observability, auth, etc.
+- Domain: Contains all business logic for a given system. This exposes out relevant interfaces for repositories to implement. I usually prefer organising code by domain concept rather than infrastructural concept (like schedules rather than interfaces vs implementations)
+- Repository: The domain exposes repository interfaces that the repository layer implements. It pushes observability metadata which gets recorded as tagged metrics or added to the request context and logged by the API.
 
-#### My Notes
-To run `dotnet run --project ./src/EyeExamApi` or in docker
-
-```
-docker build . -f ./src/EyeExamApi/Dockerfile -t eye-exam 
-docker run eye-exam
-```
-
-To make a request use `curl -v --insecure -XGET -H 'Authorization: basic dGVzdHk6bWNUZXN0RmFjZQ==' 'http://localhost:80/results'`
+## Considerations to go live
+- More Test coverage
+     - Acceptance tests (I usually do them in C#)
+     - Ask about the raw schedule service to understand message format so it can be unit tested
+     - Split existing test into smaller units
+- Pagination of results, consider using IAsyncEnumerable for raw schedule service
+- Security
+     - Secure API with strong authentication if possible (maybe digest or OAuth2)
+     - Secure API keys in something like AWS Secrets manager
+- Add health check and ping (useful for ECS service management and load balance target groups)
+- Diagnostics:
+     - Add diagnostic header support, like UserAgent and X-Request-Id
+     - API & Repository Metrics with relevant dimensions
+     - Repository call metadata (like calls to Raw Schedule Service if it's another API) added to diagnostic context to be logged by middleware
+     - Debug logs disabled when deploying
+     - Log user identity

@@ -1,4 +1,4 @@
-using EyeExamApi.DTOs;
+using EyeExamApi.Core.DTOs;
 
 namespace EyeExamApi.Interfaces
 {

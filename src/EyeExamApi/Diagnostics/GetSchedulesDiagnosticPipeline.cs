@@ -1,5 +1,5 @@
-﻿using EyeExamApi.Domain;
-using EyeExamApi.DTOs;
+﻿using EyeExamApi.Core.DTOs;
+using EyeExamApi.Domain;
 using MediatR;
 using Serilog;
 
@@ -24,7 +24,8 @@ namespace EyeExamApi.Diagnostics
 
             _context.Set("Schedules", new Dictionary<string, object>
             {
-                ["Count"] = result.Count
+                ["Count"] = result.Count,
+                ["LesseesTitles"] = result.Select(s => s.LesseesTitle)
             });
 
             return result;

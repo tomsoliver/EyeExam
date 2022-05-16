@@ -1,5 +1,5 @@
+using EyeExamApi.Core.DTOs;
 using EyeExamApi.Domain;
-using EyeExamApi.DTOs;
 using MediatR;
 using MinimalApi.Endpoint;
 

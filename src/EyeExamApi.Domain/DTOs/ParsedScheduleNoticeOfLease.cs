@@ -1,4 +1,4 @@
-namespace EyeExamApi.DTOs
+namespace EyeExamApi.Core.DTOs
 {
     public class ParsedScheduleNoticeOfLease
     {

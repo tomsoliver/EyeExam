@@ -1,4 +1,5 @@
-﻿using EyeExamApi.DTOs;
+﻿using EyeExamApi.Core.DTOs;
+using EyeExamApi.DTOs;
 
 namespace EyeExamApi.Domain;
 
