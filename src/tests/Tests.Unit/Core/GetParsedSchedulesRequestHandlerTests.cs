@@ -16,10 +16,9 @@ public class GetParsedSchedulesRequestHandlerTests
         var actual = await new GetParsedSchedulesRequestHandler(new RawScheduleDataService())
             .Handle(new GetParsedSchedulesRequest(), default);
 
-        actual.OrderBy(s => s.EntryNumber)
-            .Should()
+        actual.Should()
             .BeEquivalentTo(expected, o => o
-                .WithStrictOrdering()
+                .WithoutStrictOrdering()
                 .ComparingByMembers<ParsedScheduleNoticeOfLease>());
     }
 }

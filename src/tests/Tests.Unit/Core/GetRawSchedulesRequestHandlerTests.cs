@@ -21,7 +21,7 @@ public class GetRawSchedulesRequestHandlerTests
         actual.OrderBy(s => s.EntryNumber)
             .Should()
             .BeEquivalentTo(expected, o => o
-                .WithStrictOrdering()
+                .WithoutStrictOrdering()
                 .ComparingByMembers<RawScheduleNoticeOfLease>());
     }
 }
