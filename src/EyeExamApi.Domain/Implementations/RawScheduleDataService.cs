@@ -1,7 +1,7 @@
-using EyeExamApi.DTOs;
-using EyeExamApi.Interfaces;
+using EyeExamApi.Core.DTOs;
+using EyeExamApi.Core.Interfaces;
 
-namespace EyeExamApi.Implementations
+namespace EyeExamApi.Core.Implementations
 {
     public class RawScheduleDataService : IRawScheduleDataService
     {

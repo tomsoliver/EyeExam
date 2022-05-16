@@ -1,21 +1,24 @@
 ﻿using EyeExamApi.Core.DTOs;
-using EyeExamApi.Interfaces;
+using EyeExamApi.Core.Interfaces;
+using EyeExamApi.Core.Parsing;
 using MediatR;
 
-namespace EyeExamApi.Domain;
+namespace EyeExamApi.Core;
 
-public record GetSchedulesRequest() : IRequest<IReadOnlyCollection<ParsedScheduleNoticeOfLease>>;
+public record GetParsedSchedulesRequest() : IRequest<IReadOnlyCollection<ParsedScheduleNoticeOfLease>>;
 
-public class GetSchedulesRequestHandler : IRequestHandler<GetSchedulesRequest, IReadOnlyCollection<ParsedScheduleNoticeOfLease>>
+public class GetParsedSchedulesRequestHandler
+    : IRequestHandler<GetParsedSchedulesRequest, IReadOnlyCollection<ParsedScheduleNoticeOfLease>>
 {
     readonly IRawScheduleDataService _service;
 
-    public GetSchedulesRequestHandler(IRawScheduleDataService service)
+    public GetParsedSchedulesRequestHandler(IRawScheduleDataService service)
     {
         _service = service;
     }
 
-    public Task<IReadOnlyCollection<ParsedScheduleNoticeOfLease>> Handle(GetSchedulesRequest request, CancellationToken token)
+    public Task<IReadOnlyCollection<ParsedScheduleNoticeOfLease>> Handle(
+        GetParsedSchedulesRequest request, CancellationToken token)
     {
         var rawSchedules = _service.GetRawScheduleNoticeOfLeases();
 

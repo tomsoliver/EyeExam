@@ -1,6 +1,6 @@
 using EyeExamApi.Core.DTOs;
 
-namespace EyeExamApi.Interfaces
+namespace EyeExamApi.Core.Interfaces
 {
     public interface IParsedScheduleDataService
     {

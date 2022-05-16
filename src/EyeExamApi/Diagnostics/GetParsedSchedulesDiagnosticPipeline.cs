@@ -1,22 +1,22 @@
-﻿using EyeExamApi.Core.DTOs;
-using EyeExamApi.Domain;
+﻿using EyeExamApi.Core;
+using EyeExamApi.Core.DTOs;
 using MediatR;
 using Serilog;
 
 namespace EyeExamApi.Diagnostics
 {
-    public class GetSchedulesDiagnosticPipeline : 
-        IPipelineBehavior<GetSchedulesRequest, IReadOnlyCollection<ParsedScheduleNoticeOfLease>>
+    public class GetParsedSchedulesDiagnosticPipeline : 
+        IPipelineBehavior<GetParsedSchedulesRequest, IReadOnlyCollection<ParsedScheduleNoticeOfLease>>
     {
         private readonly IDiagnosticContext _context;
 
-        public GetSchedulesDiagnosticPipeline(IDiagnosticContext context)
+        public GetParsedSchedulesDiagnosticPipeline(IDiagnosticContext context)
         {
             _context = context;
         }
 
         public async Task<IReadOnlyCollection<ParsedScheduleNoticeOfLease>> Handle(
-            GetSchedulesRequest request, 
+            GetParsedSchedulesRequest request, 
             CancellationToken cancellationToken, 
             RequestHandlerDelegate<IReadOnlyCollection<ParsedScheduleNoticeOfLease>> next)
         {

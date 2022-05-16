@@ -1,11 +1,9 @@
 using EyeExamApi.Authentication;
+using EyeExamApi.Core.Implementations;
+using EyeExamApi.Core.Interfaces;
 using EyeExamApi.Core.Properties;
-using EyeExamApi.Implementations;
-using EyeExamApi.Interfaces;
 using MediatR;
 using Microsoft.AspNetCore.Authentication;
-using Microsoft.AspNetCore.Builder;
-using Microsoft.OpenApi.Models;
 using MinimalApi.Endpoint.Extensions;
 using Serilog;
 using Serilog.Formatting.Compact;

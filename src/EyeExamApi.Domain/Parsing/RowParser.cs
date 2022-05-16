@@ -1,4 +1,4 @@
-﻿namespace EyeExamApi.Domain;
+﻿namespace EyeExamApi.Core.Parsing;
 
 class RowParser
 {

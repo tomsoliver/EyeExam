@@ -1,7 +1,7 @@
 ﻿using Bogus;
+using EyeExamApi.Core;
 using EyeExamApi.Core.DTOs;
 using EyeExamApi.Diagnostics;
-using EyeExamApi.Domain;
 using FluentAssertions;
 using MediatR;
 using NSubstitute;
@@ -13,12 +13,12 @@ namespace Tests.Unit.Api
     public class GetSchedulesDiagnosticPipelineTests
     {
         readonly IDiagnosticContext _context;
-        readonly GetSchedulesDiagnosticPipeline _pipeline;
+        readonly GetParsedSchedulesDiagnosticPipeline _pipeline;
 
         public GetSchedulesDiagnosticPipelineTests()
         {
             _context = Substitute.For<IDiagnosticContext>();
-            _pipeline = new GetSchedulesDiagnosticPipeline(_context);
+            _pipeline = new GetParsedSchedulesDiagnosticPipeline(_context);
         }
 
         [Fact]
@@ -32,7 +32,7 @@ namespace Tests.Unit.Api
             _context.WhenForAnyArgs(c => c.Set("Schedules", Arg.Any<Dictionary<string, object>>()))
                 .Do(c => AssertMetadata(c.Arg<Dictionary<string, object>>(), data));
 
-            await _pipeline.Handle(new GetSchedulesRequest(), default, handler);
+            await _pipeline.Handle(new GetParsedSchedulesRequest(), default, handler);
         }
 
         bool AssertMetadata(Dictionary<string, object> metadata, List<ParsedScheduleNoticeOfLease> schedules)

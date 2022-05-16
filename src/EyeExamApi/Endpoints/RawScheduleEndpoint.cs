@@ -1,22 +1,22 @@
+using EyeExamApi.Core;
 using EyeExamApi.Core.DTOs;
-using EyeExamApi.Domain;
 using MediatR;
 using MinimalApi.Endpoint;
 
 namespace EyeExamApi.Endpoints;
 
-public class ScheduleEndpoint : IEndpoint<IResult>
+public class RawScheduleEndpoint : IEndpoint<IResult>
 {
     private readonly IMediator _mediator;
 
-    public ScheduleEndpoint(IMediator mediator)
+    public RawScheduleEndpoint(IMediator mediator)
     {
         _mediator = mediator ?? throw new ArgumentNullException(nameof(mediator));
     }
 
     public async Task<IResult> HandleAsync()
     { 
-        var result = await _mediator.Send(new GetSchedulesRequest());
+        var result = await _mediator.Send(new GetRawSchedulesRequest());
 
         return Results.Ok(result);
     }

@@ -1,7 +1,6 @@
 ﻿using EyeExamApi.Core.DTOs;
-using EyeExamApi.DTOs;
 
-namespace EyeExamApi.Domain;
+namespace EyeExamApi.Core.Parsing;
 
 public class RawScheduleParser
 {

@@ -74,7 +74,7 @@ Submit your result via your medium of choice (zip archive / git repo) to the rec
 Generally I organise my projects as follows:
 - API: Responsible for HTTP infrastructure, observability, auth, etc.
 - Domain: Contains all business logic for a given system. This exposes out relevant interfaces for repositories to implement. I usually prefer organising code by domain concept rather than infrastructural concept (like schedules rather than interfaces vs implementations)
-- Repository: The domain exposes repository interfaces that the repository layer implements. It pushes observability metadata which gets recorded as tagged metrics or added to the request context and logged by the API.
+- Repository(s): The domain exposes repository interfaces that the repository layer implements. It pushes observability metadata which gets recorded as tagged metrics or added to the request context and logged by the API.
 
 ## Considerations to go live
 - More Test coverage
